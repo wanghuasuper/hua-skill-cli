@@ -261,7 +261,7 @@ class HuaTui {
     const tabs = this.pages().map((page) => page === this.page ? `${cyan}${bold}${pageLabels[page]}${reset}` : `${muted}${pageLabels[page]}${reset}`).join("   ");
     const header = [
       `${cyan}┌${divider}┐${reset}`,
-      `${cyan}${boxLine(`${bold}Hack Skill${reset} ${muted}v0.1.0${reset}                                      ${cyan}本地项目模式${reset}`, width)}${reset}`,
+      `${cyan}${boxLine(`${bold}wanghua Skill${reset} ${muted}v0.1.0${reset}                                      ${cyan}本地项目模式${reset}`, width)}${reset}`,
       `${cyan}${boxLine(`${white}Project ${truncate(this.projectRoot, width - 16)}${reset}`, width)}${reset}`,
       `${cyan}${boxLine(`${muted}Targets Cursor · Codex · Claude${reset}`, width)}${reset}`,
       `${cyan}└${divider}┘${reset}`,
