@@ -2,17 +2,34 @@
   "version": 1,
   "categories": [
     {
-      "id": "frontend",
-      "name": "前端与网页",
+      "id": "wechat",
+      "name": "微信小程序",
       "skills": [
          {
           "id": "miniapp-mvp-design-generator",
           "name": "微信小程序 MVP 设计生成",
           "path": "E:\\ai项目开发\\skill技能\\hack_live-master\\skills\\微信小程序\\miniapp-mvp-design-generator.md",
           "description": "微信小程序 MVP 设计生成器。"
+        },
+         {
+          "id": "wechat-miniprogram-ui-restore",
+          "name": "微信小程序 还原页面设计",
+          "path": "E:\ai项目开发\skill技能\hack_live-master\skills\微信小程序\\wechat-miniprogram-ui-restore.md",
+          "description": "微信小程序 还原页面。"
+        }
+      ]
+    },
+    {
+      "id": "frontend",
+      "name": "前端",
+      "skills": [
+         {
+          "id": "frontend-design",
+          "name": "前端 设计",
+          "path": "E:\ai项目开发\skill技能\hack_live-master\skills\前端\\frontend-design.md",
+          "description": "前端 设计。"
         }
       ]
     }
-  ]
 }
 
