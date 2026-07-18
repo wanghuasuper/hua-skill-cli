@@ -4,20 +4,24 @@
 
 ## 安装与启动
 
-从 GitHub Release 安装：
+从 GitHub Packages 安装（私有仓库推荐）：
 
 ```powershell
-npm.cmd install -g "https://github.com/wanghuasuper/hua-skill-cli/releases/download/v<版本号>/wanghuasuper-hua-skill-cli-<版本号>.tgz"
+$env:GITHUB_TOKEN = "github_pat_你的Token"
+npm.cmd config set @wanghuasuper:registry https://npm.pkg.github.com
+npm.cmd config set //npm.pkg.github.com/:_authToken $env:GITHUB_TOKEN
+npm.cmd install -g @wanghuasuper/hua-skill-cli
 hua
 ```
 
-例如，安装 `0.1.10`：
+Token 需要有该仓库中 Packages 的读取权限。上述配置会写入用户级 `.npmrc`；也可以手动加入以下内容，以便通过环境变量提供 Token：
 
-```powershell
-npm.cmd install -g "https://github.com/wanghuasuper/hua-skill-cli/releases/download/v0.1.10/wanghuasuper-hua-skill-cli-0.1.10.tgz"
+```ini
+@wanghuasuper:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-Release 标签带 `v`（如 `v0.1.10`），而 `.tgz` 文件名不带 `v`（如 `wanghuasuper-hua-skill-cli-0.1.10.tgz`）。
+GitHub Release 仍会自动创建并保留 `.tgz` 附件，适合归档或离线安装；日常安装直接使用 `npm.cmd install -g @wanghuasuper/hua-skill-cli`。
 
 本地开发：
 
@@ -96,17 +100,18 @@ git push origin main --follow-tags
 
 `npm.cmd version` 会同步更新 `package.json` 和 `package-lock.json`，创建一个版本提交和对应的 Git 标签；例如 `patch` 会将 `0.1.10` 升为 `0.1.11`，并创建标签 `v0.1.11`。`--follow-tags` 会把该标签一同推送到 GitHub。
 
-推送标签会触发 GitHub Actions。工作流会执行 `npm ci`、构建项目、生成 `.tgz` 包，并创建同名的 GitHub Release。例如版本为 `0.1.11` 时，Release 会上传 `wanghuasuper-hua-skill-cli-0.1.11.tgz`。
+推送标签会触发 GitHub Actions。工作流会执行 `npm ci`、构建项目、生成 `.tgz` 包、发布到 GitHub Packages，并创建同名的 GitHub Release。例如版本为 `0.1.11` 时，包可通过 `@wanghuasuper/hua-skill-cli@0.1.11` 安装，Release 也会上传 `wanghuasuper-hua-skill-cli-0.1.11.tgz`。
 
 发布完成后依次确认：
 
 1. 在 [Actions](https://github.com/wanghuasuper/hua-skill-cli/actions) 页面，`Publish GitHub Release` 工作流显示成功。
 2. 在 [Releases](https://github.com/wanghuasuper/hua-skill-cli/releases) 页面，存在 `v0.1.11` Release。
-3. 该 Release 的 **Assets** 中存在 `wanghuasuper-hua-skill-cli-0.1.11.tgz`，而不只是 `Source code (zip)` 和 `Source code (tar.gz)`。
-4. 使用 Release 附件链接安装并运行 `hua`：
+3. 在仓库的 Packages 页面确认出现 `@wanghuasuper/hua-skill-cli` 的新版本。
+4. 该 Release 的 **Assets** 中存在 `wanghuasuper-hua-skill-cli-0.1.11.tgz`，而不只是 `Source code (zip)` 和 `Source code (tar.gz)`。
+5. 使用 GitHub Packages 安装并运行 `hua`：
 
    ```powershell
-   npm.cmd install -g "https://github.com/wanghuasuper/hua-skill-cli/releases/download/v0.1.11/wanghuasuper-hua-skill-cli-0.1.11.tgz"
+   npm.cmd install -g @wanghuasuper/hua-skill-cli
    hua
    ```
 

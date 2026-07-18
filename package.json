@@ -11,6 +11,9 @@
     "README.md",
     ".hua/skills.json"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "engines": {
     "node": ">=22"
   },
