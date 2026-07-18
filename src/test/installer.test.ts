@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { access, mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -27,10 +27,36 @@ test("copies a skill, records it, and only uninstalls its tracked destination", 
   assert.equal(result.kind, "installed");
   const destination = path.join(targetDirectory(data.root, "codex"), data.skill.id);
   assert.equal(await readFile(path.join(destination, "note.txt"), "utf8"), "copied");
+  await assert.rejects(access(path.join(data.root, ".hua")));
+  await access(path.join(targetDirectory(data.root, "codex"), ".hua-installed.json"));
   const ledger = await readLedger(data.root);
   assert.equal(ledger.entries.length, 1);
   await uninstallSkill(data.root, ledger.entries[0]);
   assert.equal((await readLedger(data.root)).entries.length, 0);
+});
+
+test("migrates the legacy root .hua ledger into target skill directories", async (t) => {
+  const data = await fixture();
+  t.after(() => cleanup(data.root));
+  const destination = path.join(targetDirectory(data.root, "cursor"), data.skill.id);
+  await mkdir(path.join(data.root, ".hua"));
+  await writeFile(path.join(data.root, ".hua", "installed.json"), JSON.stringify({
+    version: 1,
+    entries: [{
+      skillId: data.skill.id,
+      skillName: data.skill.name,
+      categoryId: data.category.id,
+      target: "cursor",
+      sourcePath: data.skill.sourcePath,
+      destination,
+      installedAt: "2026-01-01T00:00:00.000Z",
+    }],
+  }));
+
+  const ledger = await readLedger(data.root);
+  assert.equal(ledger.entries.length, 1);
+  await access(path.join(targetDirectory(data.root, "cursor"), ".hua-installed.json"));
+  await assert.rejects(access(path.join(data.root, ".hua")));
 });
 
 test("copies an arbitrary source file into the skill directory", async (t) => {

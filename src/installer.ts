@@ -1,7 +1,7 @@
-import { access, cp, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { access, cp, mkdir, readFile, rename, rm, rmdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import type { Category, InstalledEntry, InstallationLedger, Skill, Target } from "./types.js";
+import { TARGETS, type Category, type InstalledEntry, type InstallationLedger, type Skill, type Target } from "./types.js";
 
 const targetFolders: Record<Target, string[]> = {
   cursor: [".cursor", "skills"],
@@ -13,26 +13,65 @@ export function targetDirectory(projectRoot: string, target: Target): string {
   return path.join(projectRoot, ...targetFolders[target]);
 }
 
-export function ledgerPath(projectRoot: string): string {
+export function ledgerPath(projectRoot: string, target: Target): string {
+  return path.join(targetDirectory(projectRoot, target), ".hua-installed.json");
+}
+
+function legacyLedgerPath(projectRoot: string): string {
   return path.join(projectRoot, ".hua", "installed.json");
 }
 
-export async function readLedger(projectRoot: string): Promise<InstallationLedger> {
+async function readLedgerFile(filePath: string): Promise<InstallationLedger | undefined> {
   try {
-    const parsed = JSON.parse(await readFile(ledgerPath(projectRoot), "utf8")) as Partial<InstallationLedger>;
+    const parsed = JSON.parse(await readFile(filePath, "utf8")) as Partial<InstallationLedger>;
     if (parsed.version !== 1 || !Array.isArray(parsed.entries)) throw new Error("invalid ledger");
     return { version: 1, entries: parsed.entries as InstalledEntry[] };
   } catch {
-    return { version: 1, entries: [] };
+    return undefined;
   }
 }
 
-async function writeLedger(projectRoot: string, ledger: InstallationLedger): Promise<void> {
-  const destination = ledgerPath(projectRoot);
+async function writeLedgerFile(destination: string, ledger: InstallationLedger): Promise<void> {
   await mkdir(path.dirname(destination), { recursive: true });
   const temporary = `${destination}.${randomUUID()}.tmp`;
   await writeFile(temporary, `${JSON.stringify(ledger, null, 2)}\n`, "utf8");
   await rename(temporary, destination);
+}
+
+async function writeLedger(projectRoot: string, ledger: InstallationLedger): Promise<void> {
+  await Promise.all(TARGETS.map(async (target) => {
+    const destination = ledgerPath(projectRoot, target);
+    const entries = ledger.entries.filter((entry) => entry.target === target);
+    if (!entries.length) {
+      await rm(destination, { force: true });
+      return;
+    }
+    await writeLedgerFile(destination, { version: 1, entries });
+  }));
+}
+
+async function readTargetLedgers(projectRoot: string): Promise<InstalledEntry[]> {
+  const ledgers = await Promise.all(TARGETS.map((target) => readLedgerFile(ledgerPath(projectRoot, target))));
+  return ledgers.flatMap((ledger, index) => ledger?.entries.filter((entry) => entry.target === TARGETS[index]) ?? []);
+}
+
+async function migrateLegacyLedger(projectRoot: string): Promise<void> {
+  const source = legacyLedgerPath(projectRoot);
+  const legacy = await readLedgerFile(source);
+  if (!legacy) return;
+
+  const existing = await readTargetLedgers(projectRoot);
+  const entries = new Map<string, InstalledEntry>();
+  for (const entry of legacy.entries) entries.set(`${entry.target}:${entry.skillId}`, entry);
+  for (const entry of existing) entries.set(`${entry.target}:${entry.skillId}`, entry);
+  await writeLedger(projectRoot, { version: 1, entries: [...entries.values()] });
+  await rm(source, { force: true });
+  await rmdir(path.dirname(source)).catch(() => undefined);
+}
+
+export async function readLedger(projectRoot: string): Promise<InstallationLedger> {
+  await migrateLegacyLedger(projectRoot);
+  return { version: 1, entries: await readTargetLedgers(projectRoot) };
 }
 
 async function exists(filePath: string): Promise<boolean> {

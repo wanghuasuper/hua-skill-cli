@@ -51,7 +51,7 @@ PowerShell 如果阻止 `npm.ps1`，请使用 `npm.cmd install`、`npm.cmd link`
 
 - 安装目标：`<项目>/.cursor/skills`、`<项目>/.agents/skills`、`<项目>/.claude/skills`。
 - 安装时复制整个技能目录，并以 skill `id` 命名。
-- Hua 在 `<项目>/.hua/installed.json` 记录自己安装的内容；卸载只删除这些受管理目录。
+- Hua 在目标技能目录中记录自己安装的内容；卸载只删除这些受管理目录，不会在项目根目录创建 `.hua`。
 - 目标已存在时，界面会要求再次按 Enter 确认覆盖。复制采用临时目录和备份替换，失败时保留原目录。
 
 ## 发布

@@ -1,5 +1,7 @@
 node_modules/
 dist/
 *.tgz
-.hua/installed.json
+.cursor/skills/.hua-installed.json
+.agents/skills/.hua-installed.json
+.claude/skills/.hua-installed.json
 .npm-cache/
