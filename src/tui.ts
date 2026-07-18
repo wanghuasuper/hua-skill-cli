@@ -321,7 +321,7 @@ class HuaTui {
       `${muted}Path  ${truncate(skill.sourcePath, 100)}${reset}`,
       "",
       `${white}选择安装目标（Space 勾选，Enter 确认）：${reset}`,
-      ...TARGETS.map((target, index) => `${this.selectedPrefix(index)} ${this.selectedTargets.has(target) ? `${cyan}[x]${reset}` : `${muted}[ ]${reset}`} ${white}${target}${reset} ${muted}${targetDirectory(this.projectRoot, target)}${reset}`),
+      ...TARGETS.map((target, index) => `${this.selectedPrefix(index)} ${this.selectedTargets.has(target) ? `${cyan}[✓]${reset}` : `${muted}[ ]${reset}`} ${white}${target}${reset} ${muted}${targetDirectory(this.projectRoot, target)}${reset}`),
     ];
   }
 

@@ -41,7 +41,7 @@ test("copies an arbitrary source file into the skill directory", async (t) => {
   const skill: Skill = { id: "guide", name: "Guide", sourcePath };
   const result = await installSkill(data.root, data.category, skill, "codex");
   assert.equal(result.kind, "installed");
-  const destination = path.join(targetDirectory(data.root, "codex"), skill.id, "guide.md");
+  const destination = path.join(targetDirectory(data.root, "codex"), skill.id, "SKILL.md");
   assert.equal(await readFile(destination, "utf8"), "# Guide\n");
 });
 

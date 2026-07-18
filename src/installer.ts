@@ -78,7 +78,7 @@ export async function installSkill(
       await cp(skill.sourcePath, temporary, { recursive: true, force: false, errorOnExist: true });
     } else {
       await mkdir(temporary);
-      await cp(skill.sourcePath, path.join(temporary, path.basename(skill.sourcePath)), {
+      await cp(skill.sourcePath, path.join(temporary, "SKILL.md"), {
         force: false,
         errorOnExist: true,
       });
