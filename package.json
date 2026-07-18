@@ -1,0 +1,36 @@
+{
+  "name": "@wanghuasuper/hua-skill-cli",
+  "version": "0.1.0",
+  "description": "A terminal skill marketplace for Cursor, Codex, and Claude projects.",
+  "type": "module",
+  "bin": {
+    "hua": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    ".hua/skills.example.json"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test dist/test/config.test.js dist/test/installer.test.js",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "skills",
+    "cursor",
+    "codex",
+    "claude",
+    "cli",
+    "tui"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}
+

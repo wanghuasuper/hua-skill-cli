@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "frontend",
+      "name": "前端与网页",
+      "skills": [
+        {
+          "id": "web-design-guidelines",
+          "name": "Web 设计规范审查",
+          "path": "D:\\skills\\web-design-guidelines",
+          "description": "根据 Web Interface Guidelines 审查 UI 代码、可访问性与用户体验。"
+        },
+         {
+          "id": "miniapp-mvp-design-generator",
+          "name": "微信小程序 MVP 设计生成",
+          "path": "E:\\ai项目开发\\skill技能\\hack_live-master\\skills\\微信小程序\\miniapp-mvp-design-generator.md",
+          "description": "根据 微信小程序 MVP 设计生成。"
+        }
+      ]
+    }
+  ]
+}
+
