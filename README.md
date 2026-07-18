@@ -45,7 +45,7 @@ PowerShell 如果阻止 `npm.ps1`，请使用 `npm.cmd install`、`npm.cmd link`
 }
 ```
 
-`path` 必须是本机绝对路径，可以是技能目录或其中的 `SKILL.md`。技能目录必须含有 `SKILL.md`。
+`path` 必须是本机绝对路径，可以指向任意文件或目录；文件名不要求为 `SKILL.md`。指定文件时，安装后会保留其原始文件名。
 
 ## 行为与安全性
 

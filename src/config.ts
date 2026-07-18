@@ -1,4 +1,4 @@
-import { access, readFile, stat } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import type { Category, LoadResult, RawCategory, RawSkill, Skill } from "./types.js";
 
@@ -11,16 +11,8 @@ async function normalizeSkillPath(value: string): Promise<string> {
   }
 
   const input = path.normalize(value);
-  const details = await stat(input);
-  const root = details.isDirectory() ? input : path.dirname(input);
-
-  if (!details.isDirectory() && path.basename(input).toLowerCase() !== "skill.md") {
-    throw new Error("path 必须指向技能目录或 SKILL.md 文件");
-  }
-
-  const manifest = path.join(root, "SKILL.md");
-  await access(manifest);
-  return root;
+  await stat(input);
+  return input;
 }
 
 async function validateSkill(

@@ -14,20 +14,21 @@ async function fixture(): Promise<{ root: string; skill: string; config: string 
   const skill = path.join(root, "source-skill");
   await mkdir(skill);
   await writeFile(path.join(skill, "SKILL.md"), "# Test skill\n");
+  await writeFile(path.join(skill, "reference.md"), "# Reference\n");
   return { root, skill, config: path.join(root, "skills.json") };
 }
 
-test("loads a directory or SKILL.md path", async (t) => {
+test("loads a directory or arbitrary file path", async (t) => {
   const data = await fixture();
   t.after(() => cleanup(data.root));
   await writeFile(data.config, JSON.stringify({ categories: [{ id: "docs", name: "文档", skills: [
     { id: "directory", name: "目录", path: data.skill },
-    { id: "file", name: "文件", path: path.join(data.skill, "SKILL.md") },
+    { id: "file", name: "文件", path: path.join(data.skill, "reference.md") },
   ] }] }));
   const result = await loadConfig(data.config);
   assert.equal(result.errors.length, 0);
   assert.equal(result.categories[0].skills.length, 2);
-  assert.equal(result.categories[0].skills[1].sourcePath, data.skill);
+  assert.equal(result.categories[0].skills[1].sourcePath, path.join(data.skill, "reference.md"));
 });
 
 test("keeps valid skills when other configuration entries are invalid", async (t) => {

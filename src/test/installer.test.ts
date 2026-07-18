@@ -33,6 +33,18 @@ test("copies a skill, records it, and only uninstalls its tracked destination", 
   assert.equal((await readLedger(data.root)).entries.length, 0);
 });
 
+test("copies an arbitrary source file into the skill directory", async (t) => {
+  const data = await fixture();
+  t.after(() => cleanup(data.root));
+  const sourcePath = path.join(data.root, "guide.md");
+  await writeFile(sourcePath, "# Guide\n");
+  const skill: Skill = { id: "guide", name: "Guide", sourcePath };
+  const result = await installSkill(data.root, data.category, skill, "codex");
+  assert.equal(result.kind, "installed");
+  const destination = path.join(targetDirectory(data.root, "codex"), skill.id, "guide.md");
+  assert.equal(await readFile(destination, "utf8"), "# Guide\n");
+});
+
 test("reports a conflict without replacing an existing skill", async (t) => {
   const data = await fixture();
   t.after(() => cleanup(data.root));

@@ -1,4 +1,4 @@
-import { access, cp, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { access, cp, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import type { Category, InstalledEntry, InstallationLedger, Skill, Target } from "./types.js";
@@ -73,7 +73,16 @@ export async function installSkill(
   let movedOriginal = false;
 
   try {
-    await cp(skill.sourcePath, temporary, { recursive: true, force: false, errorOnExist: true });
+    const sourceDetails = await stat(skill.sourcePath);
+    if (sourceDetails.isDirectory()) {
+      await cp(skill.sourcePath, temporary, { recursive: true, force: false, errorOnExist: true });
+    } else {
+      await mkdir(temporary);
+      await cp(skill.sourcePath, path.join(temporary, path.basename(skill.sourcePath)), {
+        force: false,
+        errorOnExist: true,
+      });
+    }
     if (destinationExists) {
       await rename(destination, backup);
       movedOriginal = true;
@@ -112,4 +121,3 @@ export async function uninstallSkill(projectRoot: string, entry: InstalledEntry)
   ledger.entries = ledger.entries.filter((item) => !(item.target === entry.target && item.skillId === entry.skillId));
   await writeLedger(projectRoot, ledger);
 }
-
