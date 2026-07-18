@@ -23,7 +23,7 @@ PowerShell 如果阻止 `npm.ps1`，请使用 `npm.cmd install`、`npm.cmd link`
 
 ## 配置
 
-在要管理的项目中创建 `.hua/skills.json`，可从 [skills.json](.hua/skills.json) 复制。配置会从当前工作目录读取；也可以使用 `hua --config D:\\path\\skills.json` 指定绝对路径。
+默认读取已安装 `hua` 包内的 [skills.json](.hua/skills.json)，不会读取项目中的 `.hua/skills.json`。需要使用自定义配置时，可通过 `hua --config D:\\path\\skills.json` 指定绝对路径。
 
 ```json
 {

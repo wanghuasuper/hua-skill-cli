@@ -333,7 +333,7 @@ class HuaTui {
       `${cyan}安装目录${reset}`,
       ...TARGETS.map((target) => `${white}${target}${reset}  ${muted}${targetDirectory(this.projectRoot, target)}${reset}`),
       "",
-      `${muted}配置文件不会被界面修改；请在编辑器中维护 .hua/skills.json。${reset}`,
+      `${muted}默认配置来自已安装的 hua 包；可使用 --config 指定自定义配置文件。${reset}`,
     ];
   }
 }

@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { access, mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { loadConfig } from "../config.js";
+import { defaultConfigPath, loadConfig } from "../config.js";
 
 async function cleanup(root: string): Promise<void> {
   await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
@@ -29,6 +29,12 @@ test("loads a directory or arbitrary file path", async (t) => {
   assert.equal(result.errors.length, 0);
   assert.equal(result.categories[0].skills.length, 2);
   assert.equal(result.categories[0].skills[1].sourcePath, path.join(data.skill, "reference.md"));
+});
+
+test("locates the bundled marketplace configuration", async () => {
+  const configPath = defaultConfigPath();
+  await access(configPath);
+  assert.match(configPath, /[\\/]\.hua[\\/]skills\.json$/);
 });
 
 test("keeps valid skills when other configuration entries are invalid", async (t) => {

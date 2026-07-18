@@ -1,5 +1,6 @@
 import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Category, LoadResult, RawCategory, RawSkill, Skill } from "./types.js";
 
 const isNonEmptyString = (value: unknown): value is string =>
@@ -98,6 +99,6 @@ export async function loadConfig(configPath: string): Promise<LoadResult> {
   return result;
 }
 
-export function defaultConfigPath(projectRoot: string): string {
-  return path.join(projectRoot, ".hua", "skills.json");
+export function defaultConfigPath(): string {
+  return fileURLToPath(new URL("../.hua/skills.json", import.meta.url));
 }
