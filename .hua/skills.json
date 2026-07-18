@@ -14,7 +14,7 @@
          {
           "id": "wechat-miniprogram-ui-restore",
           "name": "微信小程序 还原页面设计",
-          "path": "E:\ai项目开发\skill技能\hack_live-master\skills\微信小程序\\wechat-miniprogram-ui-restore.md",
+          "path": "E:\\ai项目开发\\skill技能\\hack_live-master\\skills\\微信小程序\\wechat-miniprogram-ui-restore.md",
           "description": "微信小程序 还原页面。"
         }
       ]
@@ -26,10 +26,11 @@
          {
           "id": "frontend-design",
           "name": "前端 设计",
-          "path": "E:\ai项目开发\skill技能\hack_live-master\skills\前端\\frontend-design.md",
+          "path": "E:\\ai项目开发\\skill技能\\hack_live-master\\skills\\前端\\frontend-design.md",
           "description": "前端 设计。"
         }
       ]
     }
+  ]
 }
 
