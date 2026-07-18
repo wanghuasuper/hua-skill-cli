@@ -9,7 +9,7 @@
   "files": [
     "dist",
     "README.md",
-    ".hua/skills.example.json"
+    ".hua/skills.json"
   ],
   "engines": {
     "node": ">=22"
@@ -33,4 +33,3 @@
     "typescript": "^5.7.0"
   }
 }
-

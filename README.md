@@ -4,10 +4,10 @@
 
 ## 安装与启动
 
-发布后：
+从 GitHub Release 安装：
 
 ```powershell
-npm install -g @wanghuasuper/hua-skill-cli
+npm install -g https://github.com/wanghuasuper/hua-skill-cli/releases/download/v<版本号>/wanghuasuper-hua-skill-cli-<版本号>.tgz
 hua
 ```
 
@@ -23,7 +23,7 @@ PowerShell 如果阻止 `npm.ps1`，请使用 `npm.cmd install`、`npm.cmd link`
 
 ## 配置
 
-在要管理的项目中创建 `.hua/skills.json`，可从 [skills.example.json](.hua/skills.example.json) 复制。配置会从当前工作目录读取；也可以使用 `hua --config D:\\path\\skills.json` 指定绝对路径。
+在要管理的项目中创建 `.hua/skills.json`，可从 [skills.json](.hua/skills.json) 复制。配置会从当前工作目录读取；也可以使用 `hua --config D:\\path\\skills.json` 指定绝对路径。
 
 ```json
 {
@@ -54,7 +54,10 @@ PowerShell 如果阻止 `npm.ps1`，请使用 `npm.cmd install`、`npm.cmd link`
 - Hua 在 `<项目>/.hua/installed.json` 记录自己安装的内容；卸载只删除这些受管理目录。
 - 目标已存在时，界面会要求再次按 Enter 确认覆盖。复制采用临时目录和备份替换，失败时保留原目录。
 
+## 发布
+
+执行 `npm version patch`（或 `minor`、`major`）更新版本；该命令会创建对应的 Git 标签，例如 `v0.1.1`。然后运行 `git push origin main --follow-tags`，GitHub Actions 会构建 npm 安装包并创建 GitHub Release。发布环境需要具备 `origin` 远程仓库的推送权限。
+
 ## 键盘操作
 
 `Tab`/左右方向键切换页面，`↑`/`↓` 或 `j`/`k` 移动，`Enter` 选择/确认，`Space` 勾选目标，`r` 刷新，`u` 卸载，`b` 返回，`q` 退出。
-
