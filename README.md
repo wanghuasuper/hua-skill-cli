@@ -114,30 +114,6 @@ git push origin main --follow-tags
 
 已发布版本不要修改或重新使用标签。如果某个版本发布失败，修复问题后使用 `npm.cmd version patch` 创建下一个版本并重新发布，例如从 `0.1.11` 发布 `0.1.12`。
 
-### 手动创建 GitHub Release（备用）
-
-当 Actions 未触发或需要补传附件时，可手动发布。先在项目根目录生成 npm 包：
-
-```powershell
-$env:npm_config_cache = "$PWD\.npm-cache"
-npm.cmd pack
-```
-
-命令会生成与 `package.json` 版本对应的文件，例如 `wanghuasuper-hua-skill-cli-0.1.11.tgz`。然后：
-
-1. 打开仓库的 [Releases](https://github.com/wanghuasuper/hua-skill-cli/releases) 页面，选择 **Draft a new release**；也可以在对应 Tag 页面点击 **Create release from tag**。
-2. 选择或填写对应标签，例如 `v0.1.11`，并将标题设为 `v0.1.11`。
-3. 将刚生成的 `wanghuasuper-hua-skill-cli-0.1.11.tgz` 拖入 **Attach binaries** 区域。
-4. 点击 **Publish release**，再按上面的安装命令验证。
-
-`Source code (zip)` 和 `Source code (tar.gz)` 是 GitHub 自动生成的仓库源码包，不是此项目用于全局安装的 npm `.tgz` 发布附件。
-
-如果 PowerShell 因 npm 缓存目录权限而打包失败，可先在当前终端设置本地缓存：
-
-```powershell
-$env:npm_config_cache = "$PWD\.npm-cache"
-```
-
 ## 键盘操作
 
 `Tab`/左右方向键切换页面，`↑`/`↓` 或 `j`/`k` 移动，`Enter` 选择/确认，`Space` 勾选目标，`r` 刷新，`u` 卸载，`b` 返回，`q` 退出。
