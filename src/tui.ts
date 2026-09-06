@@ -240,6 +240,10 @@ class HuaTui {
   }
 
   private requestUninstall(): void {
+    if (this.page === "market" && this.marketView === "details") {
+      this.requestUninstallCurrentSkill();
+      return;
+    }
     if (this.page !== "project" && this.page !== "mine") return;
     const entry = this.visibleInstalled()[this.cursor];
     if (!entry) {
@@ -252,6 +256,23 @@ class HuaTui {
       this.installed = (await readLedger(this.projectRoot)).entries;
       this.cursor = 0;
       this.message = `已卸载 ${entry.skillName}。`;
+    };
+  }
+
+  private requestUninstallCurrentSkill(): void {
+    const skill = this.currentSkill();
+    if (!skill) return;
+    const entries = this.installed.filter((entry) => path.resolve(entry.sourcePath) === path.resolve(skill.sourcePath));
+    if (!entries.length) {
+      this.message = "当前选中的技能尚未安装。";
+      return;
+    }
+    const targets = entries.map((entry) => entry.target).join("、");
+    this.message = `再次按 Enter 卸载 ${skill.name}（${targets}）的已安装目录。`;
+    this.confirmAction = async () => {
+      for (const entry of entries) await uninstallSkill(this.projectRoot, entry);
+      this.installed = (await readLedger(this.projectRoot)).entries;
+      this.message = `已卸载 ${skill.name} 的已安装目录。`;
     };
   }
 

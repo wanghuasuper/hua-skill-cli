@@ -2,20 +2,26 @@
   "version": 1,
   "categories": [
     {
-      "id": "wechat",
-      "name": "微信小程序",
+      "id": "project development",
+      "name": "项目开发",
       "skills": [
          {
-          "id": "miniapp-mvp-design-generator",
-          "name": "微信小程序 MVP 设计生成",
-          "path": "E:\\ai项目开发\\skill技能\\hack_live-master\\skills\\微信小程序\\miniapp-mvp-design-generator.md",
-          "description": "微信小程序 MVP 设计生成器。"
+          "id": "project-rules-generator",
+          "name": "生成项目规范",
+          "path": "E:\\ai\\skills\\project-rules-generator\\SKILL.md",
+          "description": "使用project-rules-generator skill 生成项目规范 或 使用project-rules-generator skill 更新项目规范"
+        },
+        {
+          "id": "spec-plan",
+          "name": "生成spec-plan规范",
+          "path": "E:\\ai\\skills\\spec-plan\\SKILL.md",
+          "description": "/skills 选中 spec-plan 输入需求内容"
         },
          {
-          "id": "wechat-miniprogram-ui-restore",
-          "name": "微信小程序 还原页面设计",
-          "path": "E:\\ai项目开发\\skill技能\\hack_live-master\\skills\\微信小程序\\wechat-miniprogram-ui-restore.md",
-          "description": "微信小程序 还原页面。"
+          "id": "code-builder",
+          "name": "生成代码和测试代码",
+          "path": "E:\\ai\\skills\\code-builder\\SKILL.md",
+          "description": "使用code-builder技能生成代码和完成测试，更新文档，project-rules-generator文档目录在/docs/project-rules，specplan文档目录在/spec-plan/kms-transparent-encryption"
         }
       ]
     },
@@ -23,14 +29,37 @@
       "id": "frontend",
       "name": "前端",
       "skills": [
+        {
+          "id": "frontend-contract-planner",
+          "name": "前后端契约规划器 - 从现有前端代码反推后端契约，生成页面数据需求、MySQL 5.7 建表草案、种子数据、OpenAPI 和联调说明。",
+          "path": "E:\\ai\\skills\\frontend-contract-planner\\frontend-contract-planner.md",
+          "description": "阅读android app前端项目，基于 Frontend Contract Planner技能完成要求"
+        },
          {
           "id": "frontend-design",
-          "name": "前端 设计",
-          "path": "E:\\ai项目开发\\skill技能\\hack_live-master\\skills\\前端\\frontend-design.md",
-          "description": "前端 设计。"
+          "name": "前端设计 - 构建高质量前端界面、交互体验和视觉设计方案。",
+          "path": "E:\\ai\\skills\\frontend-design\\frontend-design.md",
+          "description": "前端设计 - 构建高质量前端界面、交互体验和视觉设计方案。"
+        }
+      ]
+    },
+    {
+      "id": "wechat",
+      "name": "微信小程序",
+      "skills": [
+         {
+          "id": "miniapp-mvp-design-generator",
+          "name": "微信小程序 MVP 设计生成",
+          "path": "E:\\ai\\skills\\miniapp-mvp-design-generator\\miniapp-mvp-design-generator.md",
+          "description": "我要制作一款:校园墙小程序，使用 skill miniapp-mvp-design-generator，帮我完成设计。"
+        },
+         {
+          "id": "wechat-miniprogram-ui-restore",
+          "name": "微信小程序 还原页面设计",
+          "path": "E:\\ai\\skills\\wechat-miniprogram-ui-restore\\wechat-miniprogram-ui-restore.md",
+          "description": "微信小程序 还原页面。"
         }
       ]
     }
   ]
 }
-

@@ -62,13 +62,32 @@ test("migrates the legacy root .hua ledger into target skill directories", async
 test("copies an arbitrary source file into the skill directory", async (t) => {
   const data = await fixture();
   t.after(() => cleanup(data.root));
-  const sourcePath = path.join(data.root, "guide.md");
+  const sourcePath = path.join(data.root, "guide.txt");
   await writeFile(sourcePath, "# Guide\n");
   const skill: Skill = { id: "guide", name: "Guide", sourcePath };
   const result = await installSkill(data.root, data.category, skill, "codex");
   assert.equal(result.kind, "installed");
   const destination = path.join(targetDirectory(data.root, "codex"), skill.id, "SKILL.md");
   assert.equal(await readFile(destination, "utf8"), "# Guide\n");
+});
+
+test("copies markdown siblings and nested resources when a markdown file is selected", async (t) => {
+  const data = await fixture();
+  t.after(() => cleanup(data.root));
+  const sourcePath = path.join(data.root, "markdown-skill", "instructions.md");
+  await mkdir(path.dirname(sourcePath), { recursive: true });
+  await writeFile(sourcePath, "# Instructions\n");
+  await writeFile(path.join(path.dirname(sourcePath), "reference.md"), "# Reference\n");
+  await mkdir(path.join(path.dirname(sourcePath), "examples"));
+  await writeFile(path.join(path.dirname(sourcePath), "examples", "example.txt"), "example");
+
+  const skill: Skill = { id: "markdown-skill", name: "Markdown skill", sourcePath };
+  const result = await installSkill(data.root, data.category, skill, "cursor");
+  assert.equal(result.kind, "installed");
+  const destination = path.join(targetDirectory(data.root, "cursor"), skill.id);
+  assert.equal(await readFile(path.join(destination, "SKILL.md"), "utf8"), "# Instructions\n");
+  assert.equal(await readFile(path.join(destination, "reference.md"), "utf8"), "# Reference\n");
+  assert.equal(await readFile(path.join(destination, "examples", "example.txt"), "utf8"), "example");
 });
 
 test("reports a conflict without replacing an existing skill", async (t) => {

@@ -1,4 +1,4 @@
-import { access, cp, mkdir, readFile, rename, rm, rmdir, stat, writeFile } from "node:fs/promises";
+import { access, cp, mkdir, readFile, readdir, rename, rm, rmdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { TARGETS, type Category, type InstalledEntry, type InstallationLedger, type Skill, type Target } from "./types.js";
@@ -83,6 +83,48 @@ async function exists(filePath: string): Promise<boolean> {
   }
 }
 
+function isWithin(parent: string, child: string): boolean {
+  const relative = path.relative(path.resolve(parent), path.resolve(child));
+  return relative === "" || (relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative));
+}
+
+async function copyMarkdownSkill(sourcePath: string, destination: string, excludedDirectories: string[]): Promise<void> {
+  const sourceDirectory = path.dirname(sourcePath);
+  const sourceName = path.basename(sourcePath);
+  const entries = await readdir(sourceDirectory);
+
+  await mkdir(destination);
+  for (const entry of entries) {
+    const sourceEntry = path.join(sourceDirectory, entry);
+    if (excludedDirectories.some((excluded) => isWithin(sourceEntry, excluded))) continue;
+    await cp(sourceEntry, path.join(destination, entry), {
+      recursive: true,
+      force: false,
+      errorOnExist: true,
+    });
+  }
+
+  if (sourceName !== "SKILL.md") {
+    const selectedCopy = path.join(destination, sourceName);
+    const skillFile = path.join(destination, "SKILL.md");
+    await rm(skillFile, { force: true });
+    await rename(selectedCopy, skillFile);
+  }
+}
+
+async function renameWithRetry(source: string, destination: string): Promise<void> {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      await rename(source, destination);
+      return;
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (attempt >= 4 || (code !== "EPERM" && code !== "EBUSY")) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 50 * (attempt + 1)));
+    }
+  }
+}
+
 function safeDestination(projectRoot: string, target: Target, skillId: string): string {
   const root = path.resolve(targetDirectory(projectRoot, target));
   const destination = path.resolve(root, skillId);
@@ -115,6 +157,8 @@ export async function installSkill(
     const sourceDetails = await stat(skill.sourcePath);
     if (sourceDetails.isDirectory()) {
       await cp(skill.sourcePath, temporary, { recursive: true, force: false, errorOnExist: true });
+    } else if (path.extname(skill.sourcePath).toLowerCase() === ".md") {
+      await copyMarkdownSkill(skill.sourcePath, temporary, TARGETS.map((item) => targetDirectory(projectRoot, item)));
     } else {
       await mkdir(temporary);
       await cp(skill.sourcePath, path.join(temporary, "SKILL.md"), {
@@ -123,10 +167,10 @@ export async function installSkill(
       });
     }
     if (destinationExists) {
-      await rename(destination, backup);
+      await renameWithRetry(destination, backup);
       movedOriginal = true;
     }
-    await rename(temporary, destination);
+    await renameWithRetry(temporary, destination);
     if (movedOriginal) await rm(backup, { recursive: true, force: true });
   } catch (error) {
     await rm(temporary, { recursive: true, force: true });
