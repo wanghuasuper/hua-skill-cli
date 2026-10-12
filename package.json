@@ -1,6 +1,6 @@
 {
   "name": "@wanghuasuper/hua-skill-cli",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "description": "A terminal skill marketplace for Cursor, Codex, Claude, and Codefree projects.",
   "type": "module",
   "bin": {
