@@ -6,3 +6,4 @@ dist/
 .claude/skills/.hua-installed.json
 .codefree/skills/.hua-installed.json
 .npm-cache/
+.codefree/
