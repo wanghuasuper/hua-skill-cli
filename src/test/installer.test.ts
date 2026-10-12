@@ -35,6 +35,20 @@ test("copies a skill, records it, and only uninstalls its tracked destination", 
   assert.equal((await readLedger(data.root)).entries.length, 0);
 });
 
+test("installs a skill into the Codefree project directory", async (t) => {
+  const data = await fixture();
+  t.after(() => cleanup(data.root));
+
+  const result = await installSkill(data.root, data.category, data.skill, "codefree");
+  assert.equal(result.kind, "installed");
+
+  const destination = path.join(data.root, ".codefree", "skills", data.skill.id);
+  assert.equal(targetDirectory(data.root, "codefree"), path.dirname(destination));
+  assert.equal(await readFile(path.join(destination, "SKILL.md"), "utf8"), "# Source\n");
+  assert.equal((await readLedger(data.root)).entries[0].target, "codefree");
+  await access(path.join(data.root, ".codefree", "skills", ".hua-installed.json"));
+});
+
 test("migrates the legacy root .hua ledger into target skill directories", async (t) => {
   const data = await fixture();
   t.after(() => cleanup(data.root));

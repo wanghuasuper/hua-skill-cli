@@ -1,4 +1,4 @@
-export const TARGETS = ["cursor", "codex", "claude"] as const;
+export const TARGETS = ["cursor", "codex", "claude", "codefree"] as const;
 
 export type Target = (typeof TARGETS)[number];
 

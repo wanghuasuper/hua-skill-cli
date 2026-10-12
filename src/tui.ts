@@ -284,7 +284,7 @@ class HuaTui {
       `${cyan}┌${divider}┐${reset}`,
       `${cyan}${boxLine(`${bold}wanghua Skill${reset} ${muted}v0.1.0${reset}                                      ${cyan}本地项目模式${reset}`, width)}${reset}`,
       `${cyan}${boxLine(`${white}Project ${truncate(this.projectRoot, width - 16)}${reset}`, width)}${reset}`,
-      `${cyan}${boxLine(`${muted}Targets Cursor · Codex · Claude${reset}`, width)}${reset}`,
+      `${cyan}${boxLine(`${muted}Targets Cursor · Codex · Claude · Codefree${reset}`, width)}${reset}`,
       `${cyan}└${divider}┘${reset}`,
       "",
       ` ${tabs}                                                     ${muted}${pageLabels[this.page]}${reset}`,

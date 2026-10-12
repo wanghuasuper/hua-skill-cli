@@ -1,7 +1,7 @@
 {
   "name": "@wanghuasuper/hua-skill-cli",
   "version": "0.1.30",
-  "description": "A terminal skill marketplace for Cursor, Codex, and Claude projects.",
+  "description": "A terminal skill marketplace for Cursor, Codex, Claude, and Codefree projects.",
   "type": "module",
   "bin": {
     "hua": "dist/cli.js"
@@ -27,6 +27,7 @@
     "cursor",
     "codex",
     "claude",
+    "codefree",
     "cli",
     "tui"
   ],

@@ -7,6 +7,7 @@ const targetFolders: Record<Target, string[]> = {
   cursor: [".cursor", "skills"],
   codex: [".agents", "skills"],
   claude: [".claude", "skills"],
+  codefree: [".codefree", "skills"],
 };
 
 export function targetDirectory(projectRoot: string, target: Target): string {

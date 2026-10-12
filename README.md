@@ -1,11 +1,11 @@
 # Hua Skill CLI
 
-Hua Skill CLI 是一个在项目终端中运行的技能管理器。它从本机绝对路径读取技能，并将技能安装到 Cursor、Codex 或 Claude 的项目级 skills 目录。
+Hua Skill CLI 是一个在项目终端中运行的技能管理器。它从本机绝对路径读取技能，并将技能安装到 Cursor、Codex、Claude 或 Codefree 的项目级 skills 目录。
 
 ## 功能
 
 - 按分类浏览技能，并查看技能描述和源文件路径。
-- 将技能安装到 Cursor、Codex、Claude 中的一个或多个目标。
+- 将技能安装到 Cursor、Codex、Claude、Codefree 中的一个或多个目标。
 - 支持技能目录、Markdown 文件和其他普通文件作为技能源。
 - 安装前检测目标冲突，确认后安全覆盖。
 - 记录 Hua 自己安装的目录，只卸载受管理的内容。
@@ -104,7 +104,7 @@ hua --help
 - **Markdown 文件（`.md`）**：复制该文件所在目录中的其他文件和文件夹；被选中的 Markdown 文件在目标中重命名为 `SKILL.md`。
 - **其他文件**：复制到目标技能目录，并重命名为 `SKILL.md`。
 
-源目录中的 Cursor、Codex、Claude 目标目录会被排除，避免把项目已有安装内容再次复制进去。
+源目录中的 Cursor、Codex、Claude、Codefree 目标目录会被排除，避免把项目已有安装内容再次复制进去。
 
 ## 安装目标与记录
 
@@ -114,6 +114,7 @@ hua --help
 <项目>/.cursor/skills/<skill-id>
 <项目>/.agents/skills/<skill-id>
 <项目>/.claude/skills/<skill-id>
+<项目>/.codefree/skills/<skill-id>
 ```
 
 每个目标目录使用自己的 `.hua-installed.json` 记录安装信息。卸载只删除记录中由 Hua 管理的技能目录，不会删除其他文件，也不会在项目根目录创建新的 `.hua` 目录。旧版本遗留的 `<项目>/.hua/installed.json` 会在读取时自动迁移。

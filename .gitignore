@@ -4,4 +4,5 @@ dist/
 .cursor/skills/.hua-installed.json
 .agents/skills/.hua-installed.json
 .claude/skills/.hua-installed.json
+.codefree/skills/.hua-installed.json
 .npm-cache/
